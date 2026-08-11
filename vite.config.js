@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // В dev-режиме Vite проксирует /api/* → https://mapi.fitnesshouse.ru/api/*
-// В продакшене VITE_API_BASE=https://mapi.fitnesshouse.ru (или настроить CORS на сервере)
+// В продакшене выставь VITE_API_BASE=https://mapi.fitnesshouse.ru (или настрой CORS на сервере)
 export default defineConfig({
   plugins: [react()],
   server: {
