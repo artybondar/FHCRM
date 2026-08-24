@@ -46,10 +46,11 @@ export const EMPLOYEE_STATUS = {
   inactive: { label: "Уволен", color: "#E53946" },
 };
 
+import { Icons } from "../components/shared/Icons";
 export const NAV_ITEMS = [
-  { id: "schedule", icon: "📅", label: "Расписание" },
-  { id: "clients", icon: "👤", label: "Клиенты" },
-  { id: "employees", icon: "👥", label: "Сотрудники" },
-  { id: "news", icon: "📰", label: "Новости" },
-  { id: "promos", icon: "🏷️", label: "Акции" },
+  { id: "schedule", icon: Icons.schedule, label: "Расписание" },
+  { id: "clients", icon: Icons.clients, label: "Клиенты" },
+  { id: "employees", icon: Icons.employees, label: "Сотрудники" },
+  { id: "news", icon: Icons.news, label: "Новости" },
+  { id: "promos", icon: Icons.promos, label: "Акции" },
 ];

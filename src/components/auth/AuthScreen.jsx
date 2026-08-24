@@ -5,6 +5,7 @@ import { api } from "../../utils/api";
 import { Error } from "../shared/Error";
 import { Button } from "../shared/Button";
 import { Input } from "../shared/Inputs";
+import { Icons } from "../shared/Icons";
 
 export function AuthScreen({ onAuth }) {
   const [step, setStep] = useState("phone");
@@ -95,7 +96,7 @@ export function AuthScreen({ onAuth }) {
         </div>
         {isDev && (
           <div className="text-center mb-8">
-            <span className="auth-dev-badge">⚙ DEV MODE</span>
+            <span className="auth-dev-badge">{Icons.dev} Демо</span>
           </div>
         )}
         <div className={`auth-box ${isDev ? "auth-box--dev" : ""}`}>

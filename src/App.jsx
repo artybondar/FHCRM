@@ -23,6 +23,15 @@ export default function App() {
   });
   const [phone, setPhone] = useState(() => localStorage.getItem("fh_phone") || "");
   const [tab, setTab] = useState("schedule");
+  
+  // Тема
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem("fh_theme") || "dark";
+    } catch {
+      return "dark";
+    }
+  });
 
   const handleAuth = (d, p) => {
     setAuth(d);
@@ -43,6 +52,14 @@ export default function App() {
     } catch {}
   };
 
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    try {
+      localStorage.setItem("fh_theme", newTheme);
+    } catch {}
+  };
+
   if (!auth) return <AuthScreen onAuth={handleAuth} />;
 
   const tabs = {
@@ -54,8 +71,15 @@ export default function App() {
   };
 
   return (
-    <Layout tab={tab} onTab={setTab} phone={phone} onLogout={handleLogout}>
-      <Suspense fallback={<div className="flex-center" style={{ height: "100vh", color: "var(--sub)" }}>Загрузка...</div>}>
+    <Layout 
+      tab={tab} 
+      onTab={setTab} 
+      phone={phone} 
+      onLogout={handleLogout}
+      theme={theme}
+      onThemeToggle={toggleTheme}
+    >
+      <Suspense fallback={<div className="flex-center" style={{ height: "100vh", color: "var(--text-secondary)" }}>Загрузка...</div>}>
         {tabs[tab]}
       </Suspense>
     </Layout>

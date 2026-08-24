@@ -15,15 +15,15 @@ export const CLUBS = [
 ];
 
 export const ISCHED = [
-  { id: 1, clubId: 14, date: "13.08.2026", time: "09:00", name: "Хатха-йога", trainer: "Кузнецова А.", zone: "Зал 2", duration: 60, available: 8, total: 15 },
-  { id: 2, clubId: 14, date: "14.08.2026", time: "11:00", name: "Body Pump", trainer: "Марков П.", zone: "Тренажёрный", duration: 45, available: 2, total: 20 },
-  { id: 3, clubId: 14, date: "15.08.2026", time: "13:00", name: "Зумба", trainer: "Орлова Н.", zone: "Танцевальный", duration: 55, available: 0, total: 18 },
-  { id: 4, clubId: 14, date: "13.08.2026", time: "18:30", name: "Пилатес", trainer: "Смирнова В.", zone: "Зал 1", duration: 50, available: 5, total: 12 },
-  { id: 5, clubId: 14, date: "14.08.2026", time: "09:00", name: "Аквааэробика", trainer: "Петров К.", zone: "Бассейн", duration: 45, available: 10, total: 20 },
-  { id: 6, clubId: 14, date: "15.08.2026", time: "11:30", name: "Силовой тренинг", trainer: "Волков Д.", zone: "Тренажёрный", duration: 60, available: 3, total: 15 },
-  { id: 7, clubId: 14, date: "13.08.2026", time: "19:00", name: "Кикбоксинг", trainer: "Быков А.", zone: "Единоборства", duration: 60, available: 7, total: 14 },
-  { id: 8, clubId: 15, date: "14.08.2026", time: "10:00", name: "Стретчинг", trainer: "Фомина Е.", zone: "Зал 1", duration: 45, available: 6, total: 10 },
-  { id: 9, clubId: 15, date: "15.08.2026", time: "12:00", name: "Кардио Микс", trainer: "Горев С.", zone: "Зал 2", duration: 50, available: 0, total: 16 },
+  { id: 1, clubId: 14, date: "24.08.2026", time: "09:00", name: "Хатха-йога", trainer: "Кузнецова А.", zone: "Зал 2", duration: 60, available: 8, total: 15 },
+  { id: 2, clubId: 14, date: "25.08.2026", time: "11:00", name: "Body Pump", trainer: "Марков П.", zone: "Тренажёрный", duration: 45, available: 2, total: 20 },
+  { id: 3, clubId: 14, date: "26.08.2026", time: "13:00", name: "Зумба", trainer: "Орлова Н.", zone: "Танцевальный", duration: 55, available: 0, total: 18 },
+  { id: 4, clubId: 14, date: "27.08.2026", time: "18:30", name: "Пилатес", trainer: "Смирнова В.", zone: "Зал 1", duration: 50, available: 5, total: 12 },
+  { id: 5, clubId: 14, date: "28.08.2026", time: "09:00", name: "Аквааэробика", trainer: "Петров К.", zone: "Бассейн", duration: 45, available: 10, total: 20 },
+  { id: 6, clubId: 14, date: "25.08.2026", time: "11:30", name: "Силовой тренинг", trainer: "Волков Д.", zone: "Тренажёрный", duration: 60, available: 3, total: 15 },
+  { id: 7, clubId: 14, date: "24.08.2026", time: "19:00", name: "Кикбоксинг", trainer: "Быков А.", zone: "Единоборства", duration: 60, available: 7, total: 14 },
+  { id: 8, clubId: 15, date: "26.08.2026", time: "10:00", name: "Стретчинг", trainer: "Фомина Е.", zone: "Зал 1", duration: 45, available: 6, total: 10 },
+  { id: 9, clubId: 15, date: "27.08.2026", time: "12:00", name: "Кардио Микс", trainer: "Горев С.", zone: "Зал 2", duration: 50, available: 0, total: 16 },
 ];
 
 export const ICLIENTS = [

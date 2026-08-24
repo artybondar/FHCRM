@@ -1,6 +1,7 @@
 // components/shared/Modal.jsx
 import { useEffect } from "react";
 import { Button } from "./Button";
+import { Icons } from "./Icons";
 
 export function Modal({ title, onClose, children, width = 500 }) {
   useEffect(() => {
@@ -18,9 +19,9 @@ export function Modal({ title, onClose, children, width = 500 }) {
       <div className={`modal ${width > 520 ? "modal-wide" : ""}`} style={{ maxWidth: width }}>
         <div className="modal-header">
           <div className="modal-title">{title}</div>
-          <button className="modal-close" onClick={onClose}>
-            ×
-          </button>
+            <button className="modal-close" onClick={onClose}>
+              {Icons.close}
+            </button>
         </div>
         <div className="modal-body">{children}</div>
       </div>

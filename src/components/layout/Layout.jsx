@@ -5,7 +5,7 @@ import { Sidebar } from "./Sidebar";
 import { MobileHeader } from "./MobileHeader";
 import { BottomNav } from "./BottomNav";
 
-export function Layout({ tab, onTab, phone, onLogout, children }) {
+export function Layout({ tab, onTab, phone, onLogout, theme, onThemeToggle, children }) {
   const width = useWidth();
   const [drawer, setDrawer] = useState(false);
   const isDesktop = width >= 1024;
@@ -13,10 +13,22 @@ export function Layout({ tab, onTab, phone, onLogout, children }) {
 
   useEffect(() => setDrawer(false), [tab]);
 
+  // Применяем тему
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme || "dark");
+  }, [theme]);
+
   if (isDesktop) {
     return (
       <div className="app-layout app-layout--desktop">
-        <Sidebar tab={tab} onTab={onTab} phone={phone} onLogout={onLogout} />
+        <Sidebar 
+          tab={tab} 
+          onTab={onTab} 
+          phone={phone} 
+          onLogout={onLogout}
+          theme={theme}
+          onThemeToggle={onThemeToggle}
+        />
         <main className="main-content">{children}</main>
       </div>
     );
@@ -35,6 +47,8 @@ export function Layout({ tab, onTab, phone, onLogout, children }) {
               onTab={(t) => { onTab(t); setDrawer(false); }}
               phone={phone}
               onLogout={() => { onLogout(); setDrawer(false); }}
+              theme={theme}
+              onThemeToggle={onThemeToggle}
             />
           </div>
         </>

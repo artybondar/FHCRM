@@ -1,13 +1,13 @@
 // components/schedule/ScheduleTab.jsx
 import { useState, useEffect, useMemo } from "react";
 import { PageHeader } from "../shared/PageHeader";
-import { Field } from "../shared/Inputs";
 import { Button } from "../shared/Button";
 import { Error } from "../shared/Error";
 import { SearchBar } from "../shared/SearchBar";
 import { ScheduleModal } from "./ScheduleModal";
 import { CITIES, CLUBS, ISCHED } from "../../utils/mockData";
 import { api } from "../../utils/api";
+import { Icons } from "../shared/Icons";
 import { 
   getTagColor, 
   toISO, 
@@ -26,7 +26,7 @@ export default function ScheduleTab({ token }) {
   const [clubs, setClubs] = useState(CLUBS);
   const [metaLoad, setMetaLoad] = useState(!isDev);
   
-  // Фильтры
+  // Фильтры как в других вкладках
   const [cityFilter, setCityFilter] = useState("");
   const [clubFilter, setClubFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -44,60 +44,66 @@ export default function ScheduleTab({ token }) {
 
   // Загрузка данных при монтировании и при изменении дат
   useEffect(() => {
-    loadAllData();
+    if (isDev) {
+      loadDevData();
+    } else {
+      loadRealData();
+    }
   }, [dateFrom, dateTo]);
 
-  // Загрузка всех данных
-  const loadAllData = async () => {
+  // Загрузка DEV данных
+  const loadDevData = () => {
     setLoading(true);
     setError("");
-
-    if (!isDev) {
-      try {
-        const allEvents = [];
-        const dateFromStr = fmtDot(fromISO(dateFrom));
-        const dateToStr = fmtDot(fromISO(dateTo));
-        
-        for (const club of CLUBS) {
-          try {
-            const data = await api.schedule(token, club.id, dateFromStr, dateToStr);
-            let events = [];
-            if (Array.isArray(data)) events = data;
-            else {
-              for (const k of ["data", "schedule", "items", "lessons", "classes", "events", "result"]) {
-                if (Array.isArray(data[k])) { events = data[k]; break; }
-              }
-            }
-            if (events.length === 0 && Object.values(data).some(v => Array.isArray(v))) {
-              events = Object.values(data).flat();
-            }
-            allEvents.push(...events.map(e => ({ ...e, clubId: club.id })));
-          } catch (e) {
-            console.warn(`Ошибка загрузки клуба ${club.id}:`, e);
-          }
-        }
-        setAllData(allEvents);
-        setLoading(false);
-        return;
-      } catch (e) {
-        setError(e.message);
-        setLoading(false);
-        return;
-      }
-    }
-
-    // DEV - используем мок данные с фильтром по датам
+    
     const f = fromISO(dateFrom);
     const t = fromISO(dateTo);
     let filtered = ISCHED.filter(e => {
       const d = dotToDate(e.date);
       return d >= f && d <= t;
     });
+    
     setAllData(filtered);
     setLoading(false);
   };
 
-  // Фильтрация данных
+  // Загрузка реальных данных
+  const loadRealData = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const allEvents = [];
+      const dateFromStr = fmtDot(fromISO(dateFrom));
+      const dateToStr = fmtDot(fromISO(dateTo));
+      
+      for (const club of CLUBS) {
+        try {
+          const data = await api.schedule(token, club.id, dateFromStr, dateToStr);
+          let events = [];
+          if (Array.isArray(data)) events = data;
+          else {
+            for (const k of ["data", "schedule", "items", "lessons", "classes", "events", "result"]) {
+              if (Array.isArray(data[k])) { events = data[k]; break; }
+            }
+          }
+          if (events.length === 0 && Object.values(data).some(v => Array.isArray(v))) {
+            events = Object.values(data).flat();
+          }
+          allEvents.push(...events.map(e => ({ ...e, clubId: club.id })));
+        } catch (e) {
+          console.warn(`Ошибка загрузки клуба ${club.id}:`, e);
+        }
+      }
+      setAllData(allEvents);
+      setLoading(false);
+    } catch (e) {
+      setError(e.message);
+      setLoading(false);
+    }
+  };
+
+  // Фильтрация данных (как в других вкладках)
   const filteredData = useMemo(() => {
     let result = allData;
 
@@ -133,6 +139,7 @@ export default function ScheduleTab({ token }) {
     }, {});
   }, [filteredData]);
 
+  // Получение списка клубов для фильтра
   const getClubsForCity = () => {
     if (!cityFilter) return clubs;
     return clubs.filter(c => String(c.city) === cityFilter);
@@ -155,6 +162,7 @@ export default function ScheduleTab({ token }) {
     setModal(null);
   };
 
+  // Получение названия клуба
   const getClubName = (id) => {
     const club = CLUBS.find(c => c.id === id);
     return club ? club.name : "—";
@@ -169,22 +177,15 @@ export default function ScheduleTab({ token }) {
         onAction={() => setModal("new")}
       />
       
-      {/* Фильтры */}
+      {/* Фильтры - единый стиль с другими вкладками */}
       <div style={{ 
         display: "flex", 
         gap: "12px", 
         flexWrap: "wrap", 
         marginBottom: "16px",
-        background: "var(--s1)",
-        padding: "16px",
-        borderRadius: "var(--radius)",
-        border: "1px solid var(--border)",
-        alignItems: "flex-end"
+        alignItems: "center"
       }}>
         <div style={{ minWidth: "150px" }}>
-          <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: "4px" }}>
-            Город
-          </div>
           <select
             value={cityFilter}
             onChange={e => setCityFilter(e.target.value)}
@@ -198,9 +199,6 @@ export default function ScheduleTab({ token }) {
         </div>
 
         <div style={{ minWidth: "200px" }}>
-          <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: "4px" }}>
-            Клуб
-          </div>
           <select
             value={clubFilter}
             onChange={e => setClubFilter(e.target.value)}
@@ -213,10 +211,8 @@ export default function ScheduleTab({ token }) {
           </select>
         </div>
 
+        {/* Даты */}
         <div style={{ minWidth: "150px" }}>
-          <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: "4px" }}>
-            Дата от
-          </div>
           <input
             type="date"
             value={dateFrom}
@@ -226,9 +222,6 @@ export default function ScheduleTab({ token }) {
         </div>
 
         <div style={{ minWidth: "150px" }}>
-          <div style={{ color: "var(--muted)", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.09em", marginBottom: "4px" }}>
-            Дата до
-          </div>
           <input
             type="date"
             value={dateTo}
@@ -246,7 +239,7 @@ export default function ScheduleTab({ token }) {
         </div>
 
         {loading && (
-          <div style={{ color: "var(--sub)", padding: "10px 0" }}>
+          <div style={{ color: "var(--text-secondary)", padding: "10px 0" }}>
             ⟳ Загрузка...
           </div>
         )}
@@ -256,7 +249,7 @@ export default function ScheduleTab({ token }) {
 
       {!loading && totalCount === 0 && (
         <div className="schedule-empty">
-          <div className="schedule-empty-icon">📭</div>
+          <div className="schedule-empty-icon">{Icons.empty}</div>
           <div>{searchQuery ? "Занятий по вашему запросу не найдено" : "Занятий в выбранный период нет"}</div>
         </div>
       )}
@@ -290,9 +283,9 @@ export default function ScheduleTab({ token }) {
                   <div className="schedule-info">
                     <div className="schedule-name">{ev.name}</div>
                     <div className="schedule-meta">
-                      {ev.trainer && <span className="schedule-meta-item">👤 {ev.trainer}</span>}
-                      {ev.zone && <span className="schedule-meta-item">📍 {ev.zone}</span>}
-                      <span className="schedule-meta-item" style={{ color: "var(--muted)" }}>
+                      {ev.trainer && <span className="schedule-meta-item">{Icons.trainer} {ev.trainer}</span>}
+                      {ev.zone && <span className="schedule-meta-item">{Icons.location} {ev.zone}</span>}
+                      <span className="schedule-meta-item" style={{ color: "var(--text-muted)" }}>
                         {getClubName(ev.clubId)}
                       </span>
                     </div>

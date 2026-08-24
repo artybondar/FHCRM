@@ -1,9 +1,10 @@
-// components/shared/Error.jsx
+import { Icons } from "./Icons";
+
 export function Error({ msg }) {
   if (!msg) return null;
   return (
     <div className="error">
-      <span>!</span>
+      <span>{Icons.error}</span>
       <span>{msg}</span>
     </div>
   );
