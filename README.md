@@ -17,7 +17,7 @@ CRM система для управления фитнес-центром.
 - React 18
 - Vite
 - CSS Modules
-- REST API (проксирование к mapi.fitnesshouse.ru)
+- REST API
 
 ## Установка и запуск
 

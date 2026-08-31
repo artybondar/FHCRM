@@ -3,20 +3,22 @@ import { useState } from "react";
 import { PageHeader } from "../shared/PageHeader";
 import { SearchBar } from "../shared/SearchBar";
 import { Badge } from "../shared/Badge";
-import { ClientModal } from "./ClientModal";
-import { ICLIENTS, CLUBS } from "../../utils/mockData";
-import { CLIENT_STATUS } from "../../utils/constants";
-import { getClubName, nextId } from "../../utils/helpers";
+import { Avatar } from "../shared/Avatar";
+import { ClientDrawer } from "./ClientDrawer";
+import { ICLIENTS, CLUBS, CLIENT_RELATED } from "../../utils/mockData";
+import { CLIENT_STATUS, GENDER } from "../../utils/constants";
+import { getClubName, nextId, fullName, calcAge, initials } from "../../utils/helpers";
 
 export default function ClientsTab() {
   const [clients, setClients] = useState(ICLIENTS);
+  const [related, setRelated] = useState(CLIENT_RELATED);
   const [query, setQuery] = useState("");
   const [clubFilter, setClubFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [modal, setModal] = useState(null);
 
   const filtered = clients.filter((c) => {
-    if (query && !c.name.toLowerCase().includes(query.toLowerCase()) && !c.phone.includes(query))
+    if (query && !fullName(c).toLowerCase().includes(query.toLowerCase()) && !c.phone.includes(query))
       return false;
     if (clubFilter && String(c.clubId) !== clubFilter) return false;
     if (statusFilter && c.status !== statusFilter) return false;
@@ -37,6 +39,12 @@ export default function ClientsTab() {
     setModal(null);
   };
 
+  // Изменение вложенных данных (Договоры, Абонементы, Посещения и т.д.) конкретного клиента —
+  // приходит из EntityDetailTabs как (source, следующий_массив_для_этого_source).
+  const updateRelated = (source, nextRows) => {
+    setRelated((r) => ({ ...r, [source]: nextRows }));
+  };
+
   return (
     <div style={{ padding: "24px 24px 32px" }}>
       <PageHeader
@@ -45,7 +53,7 @@ export default function ClientsTab() {
         action="Добавить клиента"
         onAction={() => setModal("new")}
       />
-      
+
       <div className="flex gap-10 flex-wrap mb-16">
         <SearchBar value={query} onChange={setQuery} placeholder="Имя или телефон…" />
         <select
@@ -80,7 +88,7 @@ export default function ClientsTab() {
         <table className="table">
           <thead>
             <tr>
-              {["Клиент", "Клуб", "Статус", "Карта", "Визиты", "С"].map((h) => (
+              {["Клиент", "Клуб", "Статус", "ДР / Возраст", "Пол", "Карта", "Визиты", "С"].map((h) => (
                 <th key={h}>{h}</th>
               ))}
             </tr>
@@ -89,8 +97,13 @@ export default function ClientsTab() {
             {filtered.map((c) => (
               <tr key={c.id} className="table-row" onClick={() => setModal(c)}>
                 <td>
-                  <div className="table-cell-name">{c.name}</div>
-                  <div className="table-cell-sub">{c.phone}</div>
+                  <div className="flex items-center gap-10">
+                    <Avatar initials={initials(c)} seed={c.id} size={32} />
+                    <div>
+                      <div className="table-cell-name">{fullName(c)}</div>
+                      <div className="table-cell-sub">{c.phone}</div>
+                    </div>
+                  </div>
                 </td>
                 <td className="table-cell-text" style={{ whiteSpace: "nowrap" }}>
                   {getClubName(c.clubId, CLUBS)}
@@ -101,6 +114,10 @@ export default function ClientsTab() {
                     color={CLIENT_STATUS[c.status]?.color || "var(--muted)"}
                   />
                 </td>
+                <td className="table-cell-text" style={{ whiteSpace: "nowrap" }}>
+                  {c.birthDate || "—"} {c.birthDate && `(${calcAge(c.birthDate)})`}
+                </td>
+                <td className="table-cell-text">{GENDER[c.gender]?.short || "—"}</td>
                 <td className="table-cell-text table-cell-monospace">{c.card}</td>
                 <td className="table-cell-text--white" style={{ textAlign: "center", fontWeight: 600 }}>
                   {c.visits}
@@ -112,7 +129,7 @@ export default function ClientsTab() {
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={6} style={{ textAlign: "center", padding: "40px", color: "var(--muted)" }}>
+                <td colSpan={8} style={{ textAlign: "center", padding: "40px", color: "var(--muted)" }}>
                   Клиентов не найдено
                 </td>
               </tr>
@@ -122,11 +139,13 @@ export default function ClientsTab() {
       </div>
 
       {modal && (
-        <ClientModal
+        <ClientDrawer
           item={modal === "new" ? null : modal}
           onSave={save}
           onClose={() => setModal(null)}
           onDelete={del}
+          related={related}
+          onRelatedChange={updateRelated}
         />
       )}
     </div>

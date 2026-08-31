@@ -2,13 +2,15 @@
 import { useState } from "react";
 import { PageHeader } from "../shared/PageHeader";
 import { Badge } from "../shared/Badge";
-import { EmployeeModal } from "./EmployeeModal";
-import { IEMPS, CLUBS } from "../../utils/mockData";
+import { Avatar } from "../shared/Avatar";
+import { EmployeeDrawer } from "./EmployeeDrawer";
+import { IEMPS, CLUBS, EMPLOYEE_RELATED } from "../../utils/mockData";
 import { EMPLOYEE_ROLE, EMPLOYEE_STATUS } from "../../utils/constants";
-import { getClubName, nextId } from "../../utils/helpers";
+import { getClubName, nextId, fullName, initials } from "../../utils/helpers";
 
 export default function EmployeesTab() {
   const [emps, setEmps] = useState(IEMPS);
+  const [related, setRelated] = useState(EMPLOYEE_RELATED);
   const [clubFilter, setClubFilter] = useState("");
   const [roleFilter, setRoleFilter] = useState("");
   const [modal, setModal] = useState(null);
@@ -31,6 +33,10 @@ export default function EmployeesTab() {
   const del = (id) => {
     setEmps((es) => es.filter((e) => e.id !== id));
     setModal(null);
+  };
+
+  const updateRelated = (source, nextRows) => {
+    setRelated((r) => ({ ...r, [source]: nextRows }));
   };
 
   return (
@@ -72,10 +78,10 @@ export default function EmployeesTab() {
       </div>
 
       <div className="table-wrap">
-        <table className="table" style={{ minWidth: 560 }}>
+        <table className="table" style={{ minWidth: 640 }}>
           <thead>
             <tr>
-              {["Сотрудник", "Роль", "Клуб", "Статус", "С"].map((h) => (
+              {["Сотрудник", "Специализация", "Роль", "Клуб", "Статус", "С"].map((h) => (
                 <th key={h}>{h}</th>
               ))}
             </tr>
@@ -84,9 +90,15 @@ export default function EmployeesTab() {
             {filtered.map((e) => (
               <tr key={e.id} className="table-row" onClick={() => setModal(e)}>
                 <td>
-                  <div className="table-cell-name">{e.name}</div>
-                  <div className="table-cell-sub">{e.phone}</div>
+                  <div className="flex items-center gap-10">
+                    <Avatar initials={initials(e)} seed={e.id} size={32} />
+                    <div>
+                      <div className="table-cell-name">{fullName(e)}</div>
+                      <div className="table-cell-sub">{e.phone}</div>
+                    </div>
+                  </div>
                 </td>
+                <td className="table-cell-text">{e.specialization || "—"}</td>
                 <td>
                   <Badge
                     label={EMPLOYEE_ROLE[e.role]?.label || e.role}
@@ -109,7 +121,7 @@ export default function EmployeesTab() {
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={5} style={{ textAlign: "center", padding: "40px", color: "var(--muted)" }}>
+                <td colSpan={6} style={{ textAlign: "center", padding: "40px", color: "var(--muted)" }}>
                   Сотрудников не найдено
                 </td>
               </tr>
@@ -119,11 +131,13 @@ export default function EmployeesTab() {
       </div>
 
       {modal && (
-        <EmployeeModal
+        <EmployeeDrawer
           item={modal === "new" ? null : modal}
           onSave={save}
           onClose={() => setModal(null)}
           onDelete={del}
+          related={related}
+          onRelatedChange={updateRelated}
         />
       )}
     </div>

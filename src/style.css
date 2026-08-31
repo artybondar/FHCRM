@@ -770,6 +770,58 @@ body {
   gap: 0 16px;
 }
 
+.drawer-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 16px;
+}
+
+/* ============================================
+   CLIENT DETAIL TABS
+   ============================================ */
+.client-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.client-tab {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.client-tab:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.client-tab--active {
+  background: var(--bg-active);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.client-section-title {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 20px 0 10px;
+}
+
 /* ============================================
    PAGE HEADER
    ============================================ */
@@ -1214,6 +1266,10 @@ body {
     flex: 1 1 100%;
     max-width: 100%;
   }
+
+  .drawer-grid-3 {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1296,6 +1352,11 @@ body {
   }
 
   .modal-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .drawer-grid-3 {
     grid-template-columns: 1fr;
     gap: 0;
   }
@@ -1501,3 +1562,203 @@ body {
 .icon-success { color: var(--ok); }
 .icon-warning { color: var(--warn); }
 .icon-danger { color: var(--danger); }
+/* ============================================
+   DRAWER (профиль клиента / сотрудника)
+   ============================================ */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawer {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-card);
+  border-left: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  animation: drawerSlideIn 0.22s ease-out;
+}
+
+@keyframes drawerSlideIn {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.drawer-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.drawer-body {
+  padding: 20px 24px 28px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.drawer-footer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.drawer-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.drawer-profile-name {
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.drawer-profile-sub {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+/* ============================================
+   STAT CARDS
+   ============================================ */
+.stat-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.stat-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+
+.stat-card-label {
+  color: var(--text-muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.stat-card-value {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.stat-card-sub {
+  color: var(--text-secondary);
+  font-size: 11.5px;
+  margin-top: 2px;
+}
+
+/* ============================================
+   ENTITY TAB GROUPS (сегментированный переключатель)
+   ============================================ */
+.entity-tab-groups {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px;
+  margin-bottom: 12px;
+  overflow-x: auto;
+}
+
+.entity-tab-group {
+  flex: 1;
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border-radius: calc(var(--radius) - 3px);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.entity-tab-group:hover {
+  color: var(--text);
+}
+
+.entity-tab-group--active {
+  background: var(--bg-card);
+  color: var(--primary);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   ROW ACTIONS (edit/delete в таблицах)
+   ============================================ */
+.row-action-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.row-action-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.row-action-btn--danger:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+@media (min-width: 769px) {
+  .drawer {
+    width: 92vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .drawer-header,
+  .drawer-body,
+  .drawer-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .stat-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .entity-tab-groups {
+    flex-wrap: wrap;
+  }
+
+  .entity-tab-group {
+    flex: 1 1 45%;
+  }
+}
