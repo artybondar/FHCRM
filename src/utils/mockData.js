@@ -19,11 +19,11 @@ export const ISCHED = [
   { id: 2, clubId: 14, date: "05.09.2026", time: "11:00", name: "Body Pump", trainer: "Марков П.", zone: "Тренажёрный", duration: 45, available: 2, total: 20 },
   { id: 3, clubId: 14, date: "06.09.2026", time: "13:00", name: "Зумба", trainer: "Орлова Н.", zone: "Танцевальный", duration: 55, available: 0, total: 18 },
   { id: 4, clubId: 14, date: "01.09.2026", time: "18:00", name: "Пилатес", trainer: "Смирнова В.", zone: "Зал 1", duration: 50, available: 5, total: 12 },
-  { id: 5, clubId: 14, date: "02.09.2026", time: "09:00", name: "Аквааэробика", trainer: "Петров К.", zone: "Бассейн", duration: 45, available: 10, total: 20 },
-  { id: 6, clubId: 14, date: "03.09.2026", time: "11:00", name: "Силовой тренинг", trainer: "Волков Д.", zone: "Тренажёрный", duration: 60, available: 3, total: 15 },
+  { id: 5, clubId: 14, date: "01.09.2026", time: "09:00", name: "Аквааэробика", trainer: "Петров К.", zone: "Бассейн", duration: 45, available: 10, total: 20 },
+  { id: 6, clubId: 14, date: "05.09.2026", time: "11:00", name: "Силовой тренинг", trainer: "Волков Д.", zone: "Тренажёрный", duration: 60, available: 3, total: 15 },
   { id: 7, clubId: 14, date: "04.09.2026", time: "19:00", name: "Кикбоксинг", trainer: "Быков А.", zone: "Единоборства", duration: 60, available: 7, total: 14 },
   { id: 8, clubId: 15, date: "06.09.2026", time: "10:00", name: "Стретчинг", trainer: "Фомина Е.", zone: "Зал 1", duration: 45, available: 6, total: 10 },
-  { id: 9, clubId: 15, date: "05.09.2026", time: "12:00", name: "Кардио Микс", trainer: "Горев С.", zone: "Зал 2", duration: 50, available: 0, total: 16 },
+  { id: 9, clubId: 15, date: "02.09.2026", time: "12:00", name: "Кардио Микс", trainer: "Горев С.", zone: "Зал 2", duration: 50, available: 0, total: 16 },
 ];
 
 export const ICLIENTS = [
@@ -43,7 +43,7 @@ export const CLIENT_RELATED = {
   contracts: [
     { id: 1, clientId: 1, number: "M13/26020415555", name: "1 месяц Подписка Мультикарта ps", card: "", regDate: "09.04.2026", start: "10.03.2026", end: "09.04.2026", cardType: "1 месяц (D30,V999,P0…)", active: true },
     { id: 2, clientId: 1, number: "M102/25081113002", name: "1 месяц Подписка Мультикарта", card: "", regDate: "11.08.2025", start: "11.08.2025", end: "10.09.2025", cardType: "1 месяц (D30,V999,P0…)", active: false },
-    { id: 3, clientId: 1, number: "M102/22071913003", name: "Акция 1 год (не более 80 виз.)", card: "666123", regDate: "20.07.2022", start: "01.09.2021", end: "27.08.2022", cardType: "1 год 80 визитов (D3…)", active: false },
+    { id: 3, clientId: 1, number: "M102/22071913003", name: "Акция 1 год (не более 80 виз.)", card: "666123", regDate: "20.07.2022", start: "01.09.2021", end: "27.08.2022", cardType: "1 год 80 визитов (D3…)", active: false, period: "1 год 80 визитов", visitTime: "свободное посещение", discount: "100%", category: 4, coefficient: 1.0, bonusPercent: "", bonusDiscount: "", extraDiscountPercent: "", extraDiscountRub: "", cost: 16900, discountSum: 3500, price: 0, paid: 0, paymentType: "Безналичный расчёт", organization: "ИП Фурсов А.В.", freezeDays: 0, frozen: 0, seller: "server", manager: "Интернет-магазин", paymentDate: "", paymentKind: "", credit: false, fixEnd: true, fixEndDate: "27.08.2022", terminationReason: "", reportPoint: "Пакет Услуг (МК)", support: "", overdraft: true, floorM: "", rentFloor: "", rentEnd: "", maxVisits: 78, usedVisits: 0, leftVisits: 78 },
     { id: 4, clientId: 3, number: "M40/23091500221", name: "Годовой абонемент", card: "551201", regDate: "15.09.2023", start: "15.09.2023", end: "14.09.2024", cardType: "1 год (D365,V999,P0…)", active: false },
   ],
   subscriptions: [

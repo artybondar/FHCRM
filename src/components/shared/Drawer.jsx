@@ -14,8 +14,8 @@ export function Drawer({ title, subtitle, onClose, children, footer, width = 920
   }, [onClose]);
 
   return (
-    <div className="drawer-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="drawer" style={{ maxWidth: width }}>
+    <div className="entity-drawer-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="entity-drawer" style={{ maxWidth: width }}>
         <div className="drawer-header">
           <div>
             <div className="modal-title">{title}</div>

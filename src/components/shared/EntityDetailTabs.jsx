@@ -87,7 +87,7 @@ export function EntityDetailTabs({ groups, tabs, data, entityId, entityKey, onCh
       {editing && (
         <RecordFormModal
           title={tab.label}
-          columns={tab.columns}
+          columns={tab.formColumns || tab.columns}
           record={editing.record}
           onSave={handleSave}
           onDelete={!editing.isNew ? () => handleDelete(editing.record.id) : undefined}

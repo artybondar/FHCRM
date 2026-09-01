@@ -1,8 +1,9 @@
 // components/shared/RecordFormModal.jsx
 import { useState } from "react";
 import { Modal, ModalFooter } from "./Modal";
-import { Input } from "./Inputs";
 import { Toggle } from "./Toggle";
+
+const isDateKey = (key) => /^(date|start|end|since|regDate|created|validUntil|paymentDate|fixEndDate|rentEnd)$/i.test(key);
 
 export function RecordFormModal({ title, columns, record, onSave, onClose, onDelete }) {
   const isNew = !record;
@@ -11,39 +12,37 @@ export function RecordFormModal({ title, columns, record, onSave, onClose, onDel
   );
   const [form, setForm] = useState(initial);
   const set = (k, v) => setForm((p) => ({ ...p, [k]: v }));
+  const width = columns.length > 14 ? 640 : 480;
 
   return (
-    <Modal title={`${isNew ? "Новая запись" : "Редактирование"} — ${title}`} onClose={onClose} width={520}>
-      <div className="modal-grid-2">
-        {columns.map((c) => {
-          if (c.type === "bool") {
-            return (
-              <div key={c.key} style={{ gridColumn: "1 / -1" }}>
-                <Toggle label={c.label} value={Boolean(form[c.key])} onChange={(v) => set(c.key, v)} />
-              </div>
-            );
-          }
-          if (c.type === "number" || c.type === "money") {
-            return (
-              <Input
-                key={c.key}
-                label={c.label}
-                type="number"
-                value={form[c.key]}
-                onChange={(v) => set(c.key, v === "" ? "" : Number(v))}
-              />
-            );
-          }
-          return (
-            <Input
-              key={c.key}
-              label={c.label}
-              value={form[c.key] ?? ""}
-              onChange={(v) => set(c.key, v)}
-              placeholder={/^(date|start|end|since|regDate|created|validUntil)$/i.test(c.key) ? "ДД.ММ.ГГГГ" : ""}
-            />
-          );
-        })}
+    <Modal title={`${isNew ? "Новая запись" : "Редактирование"} — ${title}`} onClose={onClose} width={width}>
+      <div className="field-list">
+        {columns.map((c) => (
+          <div className="field-row" key={c.key}>
+            <div className="field-row-label">{c.label}</div>
+            <div className="field-row-value">
+              {c.type === "bool" ? (
+                <Toggle value={Boolean(form[c.key])} onChange={(v) => set(c.key, v)} />
+              ) : c.type === "number" || c.type === "money" ? (
+                <input
+                  type="number"
+                  className="input"
+                  value={form[c.key]}
+                  onChange={(e) => set(c.key, e.target.value === "" ? "" : Number(e.target.value))}
+                  step={c.type === "money" ? "0.01" : "1"}
+                />
+              ) : (
+                <input
+                  type="text"
+                  className="input"
+                  value={form[c.key] ?? ""}
+                  onChange={(e) => set(c.key, e.target.value)}
+                  placeholder={isDateKey(c.key) ? "ДД.ММ.ГГГГ" : ""}
+                />
+              )}
+            </div>
+          </div>
+        ))}
       </div>
       <ModalFooter
         onCancel={onClose}

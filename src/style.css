@@ -1492,6 +1492,8 @@ body {
   .bottom-nav,
   .drawer-overlay,
   .drawer,
+  .entity-drawer-overlay,
+  .entity-drawer,
   .btn,
   .schedule-filters {
     display: none !important;
@@ -1565,7 +1567,7 @@ body {
 /* ============================================
    DRAWER (профиль клиента / сотрудника)
    ============================================ */
-.drawer-overlay {
+.entity-drawer-overlay {
   position: fixed;
   inset: 0;
   z-index: 200;
@@ -1574,7 +1576,7 @@ body {
   justify-content: flex-end;
 }
 
-.drawer {
+.entity-drawer {
   width: 100%;
   height: 100%;
   background: var(--bg-card);
@@ -1737,7 +1739,7 @@ body {
 }
 
 @media (min-width: 769px) {
-  .drawer {
+  .entity-drawer {
     width: 92vw;
   }
 }
@@ -1760,5 +1762,70 @@ body {
 
   .entity-tab-group {
     flex: 1 1 45%;
+  }
+}
+
+/* ============================================
+   FIELD LIST (Поле / Параметр — форма записи договора и т.п.)
+   ============================================ */
+.field-list {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.field-row:last-child {
+  border-bottom: none;
+}
+
+.field-row:nth-child(odd) {
+  background: var(--bg-input);
+}
+
+.field-row-label {
+  flex: 0 0 42%;
+  color: var(--text-secondary);
+  font-size: 12.5px;
+}
+
+.field-row-value {
+  flex: 1;
+  min-width: 0;
+}
+
+.field-row-value .input {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
+.field-row-value .toggle {
+  margin-bottom: 0;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+@media (max-width: 480px) {
+  .field-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .field-row-label {
+    flex: none;
+  }
+
+  .field-row-value {
+    width: 100%;
   }
 }
